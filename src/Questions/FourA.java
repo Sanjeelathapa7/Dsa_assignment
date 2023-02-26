@@ -2,18 +2,24 @@ package Questions;/*
 Question 4
 a)Design and Implement LFU caching
  */
+
+// Constructor for LFU Cache, which initializes the capacity and the maps
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
-class FourA{
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+
+class LFUCache {
     private int capacity;
     private Map<Integer, Integer> cache;
     private Map<Integer, Integer> freq;
     private Map<Integer, LinkedHashSet<Integer>> freqKeys;
     private int minFreq;
 
-    public FourA(int capacity) {
+    public LFUCache(int capacity) {
         this.capacity = capacity;
         this.cache = new HashMap<>();
         this.freq = new HashMap<>();
@@ -56,4 +62,22 @@ class FourA{
         freqKeys.computeIfAbsent(1, k -> new LinkedHashSet<>()).add(key);
         minFreq = 1;
     }
+
+    public static void main(String[] args) {
+        LFUCache lfuCache = new LFUCache(5);
+        lfuCache.put(1, 1);
+        lfuCache.put(2, 2);
+        System.out.println(lfuCache.get(1)); // returns 1
+        lfuCache.put(3, 3); // evicts key 2
+        System.out.println(lfuCache.get(4)); // returns -1 (not found)
+        System.out.println(lfuCache.get(3)); // returns 3
+        lfuCache.put(4, 4); // evicts key 1
+        System.out.println(lfuCache.get(5)); // returns -1 (not found)
+        System.out.println(lfuCache.get(3)); // returns 3
+        System.out.println(lfuCache.get(4)); // returns 4
+
+    }
 }
+
+
+

@@ -1,4 +1,6 @@
+package Questions;
 /*
+1(b)
 Assume you were hired to create an application for an ISP, and there is n number of network devices,
 such as routers, that are linked together to provides internet access to home user users.
 You are given a 2D array that represents network connections between these network devices
@@ -10,108 +12,110 @@ such that a[i]=[xi,yi] where xi is connected to yi device.  Suppose there is a 
   or gateway to international network..
  */
 
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class OneB {
-//    //class is represented as a graph
-//    //size of matrxi will be Vertices(vertices in graph)*V
-//
-//    int vertices;
-//    //Matrix to define a graph
-//    int [][] adjMatrix;
-//    //broken node
-//    int brokenNode;
-//
-//
-//    //constructor
-//    OneB(int vertices,int [][]edges,int brokenNode){
-//        //vertices defining
-//        this.vertices=vertices;
-//        //define the sizes of array and no.of vertices
-//        this.adjMatrix=new int[vertices][vertices];
-//        //looped over the elements of edges and populate it to graph
-//        for(int[]edge:edges){
-//            //Call AddEdge func to populate
-//            AddEdge(edge[0],edge[1]);
-//        }
-//        //defines the broken Node
-//        this.brokenNode=brokenNode;
-//    }
-//    // Adds an edge to an undirected graph
-//    //source as u destination a v
-//    void AddEdge(int sou, int des){
-//        //adding and edge from u to v
-//        adjMatrix[sou][des]=1;
-//        //since network graph is undirected, add an edge from u to v
-//        adjMatrix[des][sou]=1;
-//    }
-//    // Removes a vertex and all edges connected to it
-//       void remVertex(){
-//           // Remove the vertex from the matrix
-//           for(int i=0;i<V;i++){
-//               adjMatrix[i][brokenNode]=0;
-//               adjMatrix[brokenNode][i]=0;
-//           }
-//       }
-//    // Returns a list of all disconnected Node
-//    List<Integer> getDisconnectSubGraphs(){
-//        //Call removeVertex function to remove the broken Node from Graph
-//        remVertex();
-//        //mark all the vertices as not visisted
-//        boolean[] visited=new boolean[V];
-//        //Defined a List of Integer as subgraphs that  returns disconnected node
-//        List<Integer> subGraphs = new ArrayList<>();
-//        // Find all subgraphs
-//        for(int v=0;v<V;++v){
-//            //Checks if Vertext is Visited or is broken or not
-//            //If Visited, it is not necssary to visit again and also if it is broken then it automatically separates graphs
-//            if(!visited[v]&& v!=brokenNode){
-//                // Defined a subgraph for each as there might be multiple small disconnected due to one breakage point
-//                List<Integer> subGraph = new ArrayList<>();
-//                // Print all reachable vertices from v
-//                Dfs(v, visited, subGraph);
-//                // if the Subgraph is the breakpoint or if the subgraph has source of network then
-//                //it is not disconnected from network
-//                if(!subGraph.contains(brokenNode)&& !subGraph.contains(0)){
-//                    //If above condition satisfied then all all small part of subgraph to subgraphs
-//                    subGraphs.addAll(subGraph);
-//
-//                }
-//
-//            }
-//        }
-//        //Finally returned subgraphs
-//        return subGraphs;
-//    }
-//    void dfs(int vertices,boolean[]visited, List<Integer>subGraph){
-//        // Mark the current node as visited and add it to the subgraph
-//        visited[v]=true;
-//        subGraph.add(v);
-//        // Recur for all the vertices adjacent to this vertex
-//        for(int i=0;i<V;i++){
-//            if(adjMatrix[v][i]==1 && !visited[i]){
-//                dfs(i, visited, subGraph);
-//            }
-//        }
-//
-//    }
-//    // Driver code
-//    public static void main(String[] args) {
-//        //Edges OF the Graph
-//        int[][] edges = {{0,1}, {0,2}, {1,3}, {1,6}, {2,4}, {4,6}, {4,5}, {5,7}};
-//        //broken Node
-//        int brokenNode = 4;
-//        // Create a graph
-////        Graph graph = new Graph(8,edges,brokenNode);
-////        System.out.println("Interuppted Networks:");
-////        //Get Disconencted Networks
-////        List<Integer> subGraphs = graph.getDisconnectedSubGraphs();
-////        System.out.println(subGraphs);
-//
-//
-//    }
-//
-//
-//
-//}
+
+import java.util.ArrayList;
+import java.util.List;
+
+// Define a class named OneB
+class OneB {
+
+    // Define class variables
+    // V is the number of vertices in the graph
+    int V;
+    // adjMatrix is used to represent the graph as an adjacency matrix
+    // The size of the matrix will be V * V
+    int[][] adjMatrix;
+    // brokenNode represents the node that is broken in the network
+    int brokenNode;
+
+    // Constructor to initialize class variables
+    OneB(int V, int[][] edges, int brokenNode) {
+        // Set the number of vertices
+        this.V = V;
+        // Initialize the adjacency matrix with size V * V
+        this.adjMatrix = new int[V][V];
+        // Add all the edges to the graph using addEdge() function
+        for (int[] edge : edges) {
+            addEdge(edge[0], edge[1]);
+        }
+        // Set the broken node
+        this.brokenNode = brokenNode;
+    }
+
+    // Add an edge to the undirected graph
+    void addEdge(int src, int dest) {
+        // Add an edge from src to dest
+        adjMatrix[src][dest] = 1;
+        // Since the network graph is undirected, add an edge from dest to src as well
+        adjMatrix[dest][src] = 1;
+    }
+
+    // Remove the broken node from the graph and all its edges
+    void removeVertex() {
+        // Remove the broken node from the matrix
+        for (int i = 0; i < V; i++) {
+            adjMatrix[i][brokenNode] = 0;
+            adjMatrix[brokenNode][i] = 0;
+        }
+    }
+
+    // Return a list of disconnected subgraphs
+    List<Integer> getDisconnectedSubgraphs() {
+        // Remove the broken node from the graph
+        removeVertex();
+        // Initialize the visited array to keep track of visited vertices
+        boolean[] visited = new boolean[V];
+        // Initialize a list to store the disconnected subgraphs
+        List<Integer> subgraphs = new ArrayList<>();
+
+        // Find all subgraphs
+        for (int v = 0; v < V; ++v) {
+            // If the vertex is not visited and is not the broken node,
+            // it means that it belongs to a new subgraph
+            if (!visited[v] && v != brokenNode) {
+                // Initialize a new subgraph list for this vertex
+                List<Integer> subgraph = new ArrayList<>();
+                // Traverse all the vertices in this subgraph using DFSUtil()
+                DFSUtil(v, visited, subgraph);
+                // If the subgraph does not contain the broken node or the source node (0),
+                // it means that it is not disconnected from the network
+                if (!subgraph.contains(brokenNode) && !subgraph.contains(0)) {
+                    // Add all the vertices in this subgraph to the subgraphs list
+                    subgraphs.addAll(subgraph);
+                }
+            }
+        }
+        // Return the list of disconnected subgraphs
+        return subgraphs;
+    }
+
+    // Recursive function to traverse all vertices in a subgraph using Depth-First Search (DFS)
+    void DFSUtil(int v, boolean[] visited, List<Integer> subgraph) {
+        // Mark the current vertex as visited and add it to the subgraph list
+        visited[v] = true;
+        subgraph.add(v);
+        // Recur for all the vertices adjacent to this vertex
+        for (int i = 0; i < V; ++i) {
+            // If the vertex is adjacent to the current vertex and is not visited,
+            // then traverse it recursively
+            if (adjMatrix[v][i] == 1 && !visited[i]) {
+                DFSUtil(i, visited, subgraph);
+            }
+        }
+    }
+    public static void main(String[] args) {
+        //Edges OF the Graph
+        int[][] edges = {{0,1}, {0,2}, {1,3}, {1,6}, {2,4}, {4,6}, {4,5}, {5,7}};
+        //broken Node
+        int brokenNode = 4;
+        // Create a graph
+        OneB oneB = new OneB(8,edges,brokenNode);
+
+        System.out.println("Interuppted Networks:");
+        //Get Disconencted Networks
+        List<Integer> subgraphs = oneB.getDisconnectedSubgraphs();
+        System.out.println(subgraphs);
+
+    }
+    }
+
